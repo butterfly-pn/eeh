@@ -1,0 +1,116 @@
+@charset "utf-8";
+
+
+/*-------------------------
+	Simple reset
+--------------------------*/
+
+.primary {
+  background-color: #757575;
+  color: #ffffff;
+}
+.primary-light {
+  background-color: #a4a4a4;
+  color: #ffffff;
+}
+.primary-dark {
+  background-color: #494949;
+  color: #ffffff;
+}
+.secondary {
+  background-color: #1976d2;
+  color: #ffffff;
+}
+.secondary-light {
+  background-color: #63a4ff;
+  color: #ffffff;
+}
+.secondary-dark {
+  background-color: #004ba0;
+  color: #ffffff;
+}
+html, body{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+/*-------------------------
+	Demo page
+-------------------------*/
+
+.name{
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    width: 70%;
+    white-space: nowrap;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    top: 40px;
+}
+.ikona{
+    width: 80px;
+}
+@media (max-width:480px){
+    .name{
+        width: 45%;
+    }
+}
+
+@media (max-width:768px){
+    .brandings a {
+        width: 46px!important;
+        height: 46px;
+    }
+}
+
+.btn {
+    border-radius: 0;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.brandings {
+position: fixed;
+top: 60px;
+right: 20px;
+z-index: 98;
+height: 100px;
+animation-name: showBrandings;
+animation-duration: 1s;
+}
+
+.brandings a {
+width: 92px;
+display: inline-block;
+}
+
+.brandings a img {
+width: 100%;
+height: auto;
+}
+
+@keyframes hideBrandings {
+  0% {
+    top: 60px; }
+  100% {
+    top: -90px; } }
+@keyframes showBrandings {
+  0% {
+    top: -90px; }
+  100% {
+    top: 60px; } }
+
+.container{
+    padding-top: 100px;
+}
+
+.navbar {
+    position: fixed!important;
+    width: 100%;
+}

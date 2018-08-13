@@ -1,0 +1,6 @@
+
+*.pyc
+.idea
+.vscode
+venv
+eeh/test.db

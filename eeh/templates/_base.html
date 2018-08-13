@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang='pl'>
+
+<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=300, height=device-height, target-densitydpi=medium-dpi, user-scalable=no"
+    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <title>{{page_title}} - EEH</title>
+</head>
+
+<body class="form" style="font-family: 'Roboto Slab';">
+    <nav class="navbar navbar-expand-md navbar-light bg-light mb-2 navbar-fixed-top" style="z-index: 99;">
+        <a class="navbar-brand mr-auto" href="/" style="height: 45px">
+            <span class="align-middle mr-1">EEH</span>
+            <span class="align-middle badge" style="border-color:#39ff07; color:#39ff07; border: 1px solid">PROTOTYPE</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbarsExampleDefault"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="navbar-nav ml-auto mr-0">
+                {% if current_user.is_authenticated %}
+                <li class="nav-item {% if page_id == 'user' %}active{% endif %}">
+                    <a class="nav-link" href="/user/{{current_user.name}}">{{current_user.name}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Wyloguj się</a>
+                </li>
+                {% else %}
+                <li class="nav-item{% if page_id == 'register' %} active{% endif %}">
+                    <a class="nav-link" href="/register">
+                        Zarejestruj się
+                    </a>
+                </li>
+                <li class="nav-item{% if page_id == 'login' %} active{% endif %}">
+                    <a class="nav-link" href="/login">
+                        Zaloguj
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item{% if page_id == 'about' %} active{% endif %}">
+                    <a class="nav-link" href="/about">
+                        About
+                    </a>
+                </li>
+                {% if current_user.is_authenticated %} {% if current_user.admin%}
+                <hr>
+                <li class="nav-item  md-m-0 mx-1 {% if page_id == 'admin' %} active{% endif %}">
+                    <a class="btn btn-warning btn-block" href="/admin">Funkcje administratora</a>
+                </li>
+                {% elif current_user.modderator%}
+                <hr>
+                <li class="nav-item  md-m-0 mx-1 {% if page_id == 'admin' %} active{% endif %}">
+                    <a class="btn btn-warning btn-block" href="/admin">Funkcje moderatora</a>
+                </li>
+                {% endif %} {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="brandings">
+        <a href="http://zhr.pl" target="_blank">
+            <img src="{{url_for('static', filename='img/zhr-branding.png')}}" alt="ZHR">
+        </a>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <div id="messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+                    <div data-alert class="alert alert-{{category}} alert-dismissible show">
+                        {{ message|safe }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %} {% endif %} {% endwith %}
+                </div>
+            </div>
+            <div class="col-lg-6"></div>
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>
