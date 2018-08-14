@@ -87,7 +87,7 @@ body {
   position: fixed;
   top: 60px;
   right: 20px;
-  z-index: 98;
+  z-index: 97;
   height: 100px;
   animation-name: showBrandings;
   animation-duration: 1s;
@@ -108,7 +108,7 @@ body {
   position: fixed;
   height: 100%;
   width: 550px;
-  z-index: 50;
+  z-index: 98;
 }
 
 #messages div {
@@ -158,4 +158,24 @@ body {
 .navbar {
   position: fixed !important;
   width: 100%;
+}
+
+.app-menu-item {
+    width: 370px; 
+    height: 370px;
+    border: 1px dashed;
+    text-align: center;
+    margin: 5px;
+}
+
+.app-menu-item a {
+    position: relative; 
+    text-decoration: none;
+    color: black;
+}
+
+.app-menu-item-text {
+    height: 100%;
+padding-top: 80%;
+font-size: 24px;
 }

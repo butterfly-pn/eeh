@@ -14,16 +14,23 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-        <title>{{page_title}} - EEH</title>
+        <title>{% if not page_title %}Elektroniczna Ewidencja Harcerzy{% else %}{{page_title}} - EEH{% endif %}</title>
 </head>
 
 <body class="form" style="font-family: 'Roboto Slab';">
     <nav class="navbar navbar-expand-md navbar-light bg-light mb-2 navbar-fixed-top" style="z-index: 99;">
-        <a class="navbar-brand mr-auto" href="/" style="height: 45px">
+        <a class="navbar-brand mr-auto" href="/app/" style="height: 45px">
             <span class="align-middle mr-1">EEH</span>
             <span class="align-middle badge" style="border-color:#39ff07; color:#39ff07; border: 1px solid">PROTOTYPE</span>
         </a>
     </nav>
+    {% if page_id == 'app' %}
+    <div class="brandings">
+        <a href="http://zhr.pl" target="_blank">
+            <img src="{{url_for('static', filename='img/zhr-branding.png')}}" alt="ZHR">
+        </a>
+    </div>
+    {% endif %}
     <div class="container">
         <div class="row">
             <div class="col-lg-3"></div>
