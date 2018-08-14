@@ -7,7 +7,7 @@
   <div class="row login-row">
     <div class="col-lg-4">
     </div>
-    <div class="col-lg-4 bg-white border m-2" style="padding:15px;">
+    <div class="col-lg-4 bg-white m-2" style="padding:15px; border: 1px dashed;">
       <h3>Logowanie</h3>
 		<form method=post action="{% if request.args.get('next') %}{{request.path + "?next=" + request.args.get('next')}}{%else%}/login/{%endif%}">
             <div class="form-group">
@@ -26,7 +26,7 @@
                     <input type="checkbox" name="remember"> Zapamiętaj mnie
                 </label>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj się</button>
+            <button class="btn btn-lg btn-dashed-primary btn-block" type="submit">Zaloguj się</button>
 		</form>
 		{% if error %}
 			<p class="error"><strong>Error:</strong>{{error}}</p>

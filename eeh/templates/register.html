@@ -7,7 +7,7 @@
   <div class="row register-row">
     <div class="col-lg-4">
     </div>
-    <div class="col-lg-4 bg-white m-2 border" style="padding:15px;">
+    <div class="col-lg-4 bg-white m-2" style="padding:15px; border: 1px dashed;">
       <h3>Rejestracja</h3>
 		<form id="form" method=post action="{{url_for('register', next=request.args.get('next'))}}">
             <div class="form-group">
@@ -51,7 +51,7 @@
                 </small>
                 {% endif %}
             </div><br>-->
-            <button id="submit" class="btn btn-lg btn-primary btn-block" type="submit">Zarejestruj się</button>
+            <button id="submit" class="btn btn-lg btn-dashed-primary btn-block" type="submit">Zarejestruj się</button>
 		</form>
 	</div>
     <div class="col-lg-4">
