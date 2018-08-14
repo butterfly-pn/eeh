@@ -76,11 +76,20 @@
         <div class="row">
             <div class="col-lg-3"></div>
             <div class="col-lg-6">
+                <script>
+                    function ani(id) {
+                        document.getElementById(id).style = "animation: hideMessage 1s; animation-fill-mode:forwards;"
+                        setTimeout(function () {
+                            document.getElementById(id).parentNode.removeChild(document.getElementById(id));
+                            return false;
+                        }, 1500);
+                    }
+                </script>
                 <div id="messages">
                     {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
-                    <div data-alert class="alert alert-{{category}} alert-dismissible show">
+                    <div id="message-{{loop.index}}" data-alert class="alert alert-{{category}} alert-dismissible show">
                         {{ message|safe }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <button id="close-button" type="button" class="close" aria-label="Close" onclick="ani($(this).parent().attr('id'))">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
