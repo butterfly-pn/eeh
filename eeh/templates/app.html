@@ -1,38 +1,48 @@
 {% extends "_base_no_menu.html" %} {% set page_id = 'app' %} {% block content %}
 <div class="row">
     <div class="app-menu-item">
+        <i class="fas fa-angle-double-up app-menu-item-image"></i>
+        <p class="app-menu-item-text">Ewidencja stopnii</p>
         <a href="/grade/form/">
-            <i class="fas fa-angle-double-up app-menu-item-image"></i>
-            <p class="app-menu-item-text">Ewidencja stopnii</p>
+
         </a>
     </div>
     <div class="app-menu-item">
+        <i class="fas fa-basketball-ball app-menu-item-image"></i>
+        <p class="app-menu-item-text">Raportowanie zbiórek</p>
         <a href="/new/zbiorka/">
-            <i class="fas fa-basketball-ball app-menu-item-image"></i>
-            <p class="app-menu-item-text">Raportowanie zbiórek</p>
+
         </a>
     </div>
     <div class="app-menu-item">
+        <i class="fas fa-sign-in-alt app-menu-item-image"></i>
+        <p class="app-menu-item-text">Zaloguj się</p>
         <a href="/login/">
-            <i class="fas fa-sign-in-alt app-menu-item-image"></i>
-            <p class="app-menu-item-text">Zaloguj się</p>
+
         </a>
     </div>
 </div>
 <div class="row">
     <div class="app-menu-item">
+        <i class="fas fa-list-ol app-menu-item-image"></i>
+        <p class="app-menu-item-text">Punktacja</p>
         <a href="/rating/">
-            <i class="fas fa-list-ol app-menu-item-image"></i>
-            <p class="app-menu-item-text">Punktacja</p>
+
         </a>
     </div>
-    <div class="app-menu-item"><a href="/">
+    <div class="app-menu-item">
         <i class="fas fa-align-justify app-menu-item-image"></i>
         <p class="app-menu-item-text">Dla dru&#380;ynowego</p>
-    </a></div>
-    <div class="app-menu-item"><a href="/contact/">
+        <a href="/">
+
+        </a>
+    </div>
+    <div class="app-menu-item">
         <i class="fas fa-at app-menu-item-image"></i>
         <p class="app-menu-item-text">Kontakt</p>
-    </a></div>
+        <a href="/contact/">
+
+        </a>
+    </div>
 </div>
 {% endblock %}
