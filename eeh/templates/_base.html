@@ -14,8 +14,9 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-            crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-badge-outline.css') }}">
     <title>{% if not page_id %}Elektroniczna Ewidencja Harcerzy{% else %}{{page_title}} - EEH{% endif %}</title>
 </head>
 
@@ -23,7 +24,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-light mb-2 navbar-fixed-top" style="z-index: 99;">
         <a class="navbar-brand mr-auto" href="/app/" style="height: 45px">
             <span class="align-middle mr-1">EEH</span>
-            <span class="align-middle badge" style="border-color:#39ff07; color:#39ff07; border: 1px solid">PROTOTYPE</span>
+            <span class="align-middle badge badge-outline-success">PROTOTYPE</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbarsExampleDefault"
             aria-expanded="false" aria-label="Toggle navigation">
