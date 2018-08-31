@@ -1,7 +1,7 @@
 """Database tables models"""
 from flask_login._compat import unicode
 from sqlalchemy import Column
-from sqlalchemy.types import Integer, String, Boolean, Date
+from sqlalchemy.types import Integer, String, Boolean, Date, Text
 from passlib.hash import sha256_crypt
 from main import DB, LM
 
@@ -22,6 +22,7 @@ class Druzyna(DB.Model):
     email = Column(String(200), unique=True)
     confirm_mail = Column(Boolean, default=False)
     password = Column(String(200), default='')
+    current_plan = Column(Integer)
     admin = Column(Boolean, default=False)
     ban = Column(Boolean, default=False)
 
@@ -62,3 +63,21 @@ class Harcerz(DB.Model):
     nrkont = Column(String(13))
     funkcja = Column(Integer)
     druzyna = Column(Integer)
+
+class HarcerzPlan(DB.Model):
+    """Model for work plan with scout"""
+    __tablename__ = "harcerzplan"
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    plan_id = Column(Integer)
+    harcerz_id = Column(Integer)
+    charakterystyka = Column(Text)
+    cele = Column(Text)
+
+class Plan(DB.Model):
+    """Model for work plan"""
+    __tablename__ = "plan"
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    druzyna_id = Column(Integer)
+    wizja = Column(Text)
+    cele = Column(Text)
+    zz = Column(Text)

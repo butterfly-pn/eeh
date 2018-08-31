@@ -26,7 +26,7 @@ def login():
                 login_user(user, remember=remember)
                 if request.args.get('next'):
                     return redirect(request.args.get('next'))
-                return redirect('/')
+                return redirect('/app/')
             return render_template('login.html', form=request.form, wrong=True)
         else:
             return render_template('login.html')
