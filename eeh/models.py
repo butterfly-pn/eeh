@@ -48,7 +48,7 @@ class Druzyna(DB.Model):
         return unicode(self.id)
 
     def __repr__(self):
-        return '<User %r>' % (self.username)
+        return '<User %r>' % (self.name)
 
 class Harcerz(DB.Model):
     """Model for records"""
@@ -77,6 +77,8 @@ class Plan(DB.Model):
     """Model for work plan"""
     __tablename__ = "plan"
     id = Column(Integer, autoincrement=True, primary_key=True)
+    name = Column(String(200))
+    typ = Column(String(30))
     druzyna_id = Column(Integer)
     wizja = Column(Text)
     cele = Column(Text)
