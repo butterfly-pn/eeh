@@ -4,7 +4,7 @@
             <a class="nav-link {% if page_id=='app'%}active"{% else %}" href="/app/" {% endif %}>Druhowie</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {% if page_id=='plan' or page_id=='plan-new'%}active"{% else %}" href="/plan/" {% endif %}>Plan pracy</a>
+            <a class="nav-link {% if page_id=='plan' or page_id=='plan-new'%}active"{% else %}" href="/plan/{{current_user.current_plan}}" {% endif %}>Plan pracy</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Zastępy</a>

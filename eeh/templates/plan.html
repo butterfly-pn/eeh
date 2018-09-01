@@ -7,7 +7,7 @@
 	<div class="mt-3 mb-3">
 		<select onChange="window.location.href=this.value" class="custom-select">
 			{% for plan in plany %}
-			<option value="{{request.host_url}}plan/{{plan.id}}" {% if plan.id == current_user.current_plan %}selected{% endif %}>{{plan.name}}</option>
+			<option value="{{request.host_url}}plan/{{plan.id}}" {% if request.path == '/plan/' ~ plan.id|string %}selected{% endif %}>{{plan.name}}</option>
 			{% endfor %}
 		</select>
 		<h1>Plan pracy</h1>
