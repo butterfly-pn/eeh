@@ -2,8 +2,11 @@ from flask import request, redirect, render_template, flash, url_for
 from flask_login import current_user, login_user, logout_user
 from passlib.handlers.sha2_crypt import sha256_crypt
 from main import APP, DB
+from dbconnect import connection
+from pymysql import escape_string
 from eeh.models import Druzyna
 import re
+import gc
 
 
 @APP.route('/login/', methods=["GET", "POST"])
@@ -15,19 +18,28 @@ def login():
                 return redirect(request.args.get('next'))
             return redirect('/')
         if request.method == "POST":
-            user = Druzyna.query.filter_by(email=request.form['mail']).first()
-            if user and user.check_password(request.form['password']):
-                try:
-                    print("true")
-                    remember = request.form['remember']
-                except Exception as error:
-                    print(error)
-                    remember = False
-                login_user(user, remember=remember)
-                if request.args.get('next'):
-                    return redirect(request.args.get('next'))
-                return redirect('/app/')
-            return render_template('login.html', form=request.form, wrong=True)
+            try:
+                con, conn = connection()
+                con.execute("SELECT * FROM user WHERE email = (%s)",
+                            escape_string(request.form['mail']))
+                user = con.fetchone()
+                con.close()
+                conn.close()
+                gc.collect()
+                if user and sha256_crypt.verify(request.form['password'], user['password']):
+                    try:
+                        print("true")
+                        remember = request.form['remember']
+                    except Exception as error:
+                        print(error)
+                        remember = False
+                    login_user(user, remember=remember)
+                    if request.args.get('next'):
+                        return redirect(request.args.get('next'))
+                    return redirect('/app/')
+                return render_template('login.html', form=request.form, wrong=True)
+            except Exception as error:
+                print(error)
         else:
             return render_template('login.html')
     except Exception as error:

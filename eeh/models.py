@@ -4,11 +4,19 @@ from sqlalchemy import Column
 from sqlalchemy.types import Integer, String, Boolean, Date, Text
 from passlib.hash import sha256_crypt
 from main import DB, LM
+from dbconnect import connection
+from pymysql import escape_string
 
 
 @LM.user_loader
 def user_load(user_id):
-    return Druzyna.query.get(int(user_id))
+    con, conn = connection()
+    con.execute("SELECT * FROM user WHERE id = (%s)", escape_string=user_id)
+    user = con.fetchone()
+    con.close()
+    conn.close()
+    gc.collect()
+    return user
 
 
 class Druzyna(DB.Model):

@@ -4,3 +4,4 @@
 .vscode
 venv
 eeh/test.db
+.DS_Store
