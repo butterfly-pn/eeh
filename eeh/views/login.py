@@ -56,7 +56,7 @@ def register():
                 form = request.form
                 name = form['full-name']
                 email = form['email']
-                password = form['password']
+                password = sha256_crypt.encrypt((str(form['password'])))
                 used_name = Druzyna.query.filter_by(name=name).first()
                 if used_name:
                     used_name = True
