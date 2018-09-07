@@ -11,12 +11,18 @@
       <h3>Rejestracja</h3>
 		<form id="form" method=post action="{{url_for('register', next=request.args.get('next'))}}">
             <div class="form-group">
-                <input id="full-name" name="full-name" type="text" class="form-control" placeholder="Nazwa drużyny">
+                <input id="login" name="login" type="text" class="form-control" placeholder="Login">
                 {% if used_username %}
                 <small class="form-text text-danger">
-                    Ta nazwa jest już zajęta!
+                    Ten login jest już zajęty!
                 </small>
                 {% endif %}
+            </div>
+            <div class="form-group">
+                <input id="first-name" name="first-name" type="text" class="form-control" placeholder="Twoje imię">
+            </div>
+            <div class="form-group">
+                <input id="last-name" name="last-name" type="text" class="form-control" placeholder="Twoje nazwisko">
             </div>
             <div class="form-group">
                 <input autocapitalize="none" class="form-control" id="email" name="email" type="email" value="{% if form %}{{form['email']}}{% endif %}" placeholder="Adres email drużynowego">
