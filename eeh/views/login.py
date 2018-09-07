@@ -53,11 +53,11 @@ def register():
     if not current_user.is_authenticated:
         try:
             if request.method == "POST":
+                con, conn = connection()
                 form = request.form
-                name = form['full-name']
                 email = form['email']
                 password = sha256_crypt.encrypt((str(form['password'])))
-                used_name = Druzyna.query.filter_by(name=name).first()
+                used_username = con.execute("SELECT * FROM user WHERE login = (%s)", escape_string(request.form['login'])
                 if used_name:
                     used_name = True
                 else:
@@ -68,7 +68,7 @@ def register():
                     wrong_email = False
                 if used_name or wrong_email:
                     return render_template('register.html', form=form, used_username=used_name, wrong_email=wrong_email)
-                user = Druzyna(name=name, password=password, email=email)
+           #####TO DO
                 DB.session.add(user)
                 DB.session.commit()
                 flash("Zarejestrowano pomyślnie!", 'success')
