@@ -1,13 +1,23 @@
 from flask import request, redirect, render_template, flash, url_for
 from flask_login import current_user, login_user, logout_user
 from passlib.handlers.sha2_crypt import sha256_crypt
-from main import APP, DB
+from main import APP, DB, MAIL
 from dbconnect import connection
 from pymysql import escape_string
-from eeh.models import Druzyna
+from flask_mail import Message
+from itsdangerous import URLSafeTimedSerializer
 import re
 import gc
+import config
 
+ts = URLSafeTimedSerializer(APP.secret_key)
+
+def send_confirmation_email(user=current_user):
+    token = ts.dumps(user['mail'], salt='email-confirm-key')
+    msg = Message("EEH - Potwierdź swój adres email",
+                  sender=config.MAIL_USERNAME, recipients=[user['mail']])
+    msg.html = render_template('verify_email.html', token=token)
+    MAIL.send(msg)
 
 @APP.route('/login/', methods=["GET", "POST"])
 def login():
@@ -21,7 +31,7 @@ def login():
             try:
                 con, conn = connection()
                 con.execute("SELECT * FROM user WHERE email = (%s)",
-                            escape_string(request.form['mail']))
+                            escape_string(request.form['email']))
                 user = con.fetchone()
                 con.close()
                 conn.close()
@@ -57,21 +67,23 @@ def register():
                 form = request.form
                 email = form['email']
                 password = sha256_crypt.encrypt((str(form['password'])))
-                used_username = con.execute("SELECT * FROM user WHERE login = (%s)", escape_string(request.form['login'])
-                if used_name:
-                    used_name = True
-                else:
-                    used_name = False
+                used_username = con.execute("SELECT * FROM user WHERE login = (%s)", escape_string(request.form['login']))
                 if "@" not in email:
                     wrong_email = True
                 else:
                     wrong_email = False
-                if used_name or wrong_email:
-                    return render_template('register.html', form=form, used_username=used_name, wrong_email=wrong_email)
-           #####TO DO
-                con.execute("INSERT INTO scout (first_name, last_name) VALUES (%s, %s)", escape_string(form['first-name'], escape_string['last-name']))
+                if used_username or wrong_email:
+                    return render_template('register.html', form=form, used_username=used_username, wrong_email=wrong_email)
+                con.execute("INSERT INTO scout (first_name, last_name) VALUES (%s, %s)", (escape_string(form['first-name']), escape_string(form['last-name'])))
                 conn.commit()
+                scout_id = con.lastrowid
+                sql = "INSERT INTO user (login, password, email, scout_id) VALUES (%s, %s, %s, " + str(
+                    scout_id) + ")"
+                con.execute(sql, (escape_string(form['login']), escape_string(password), escape_string(form['email'])))
+                conn.commit()
+                user = ("SELECT * FROM user WHERE id=LAST_INSERT_ID()")
                 flash("Zarejestrowano pomyślnie!", 'success')
+                send_confirmation_email(user['email'])
                 con.close()
                 conn.close()
                 gc.collect()
@@ -95,5 +107,21 @@ def logout():
     except Exception as e:
         flash('Błąd: '+str(e), 'danger')
         return redirect('/')
+
+@APP.route('/user/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = ts.loads(token, salt="email-confirm-key", max_age=86400)
+        con, conn = connection()
+        user = con.execute("UPDATE user SET email_confirm = 1 WHERE email = (%s)", escape_string=email)
+        #user = User.query.filter_by(email=email).first_or_404()
+        conn.commit()
+        flash("Adres email zweryfikowany!", 'success')
+        con.close()
+        conn.close()
+        gc.collect()
+    except Exception as error:
+        flash("Blad" + str(error), 'danger')
+    return redirect('/')
 
 APP.secret_key = "sekret"

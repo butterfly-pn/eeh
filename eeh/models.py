@@ -6,6 +6,7 @@ from passlib.hash import sha256_crypt
 from main import DB, LM
 from dbconnect import connection
 from pymysql import escape_string
+import gc
 
 
 @LM.user_loader
