@@ -69,9 +69,12 @@ def register():
                 if used_name or wrong_email:
                     return render_template('register.html', form=form, used_username=used_name, wrong_email=wrong_email)
            #####TO DO
-                DB.session.add(user)
-                DB.session.commit()
+                con.execute("INSERT INTO scout (first_name, last_name) VALUES (%s, %s)", escape_string(form['first-name'], escape_string['last-name']))
+                conn.commit()
                 flash("Zarejestrowano pomyślnie!", 'success')
+                con.close()
+                conn.close()
+                gc.collect()
                 return redirect(url_for('login', next=next_url, username=email))
             else:
                 return render_template('register.html')
