@@ -8,15 +8,17 @@ from pymysql import escape_string
 @APP.route('/app/')
 def app():
     scouts = {}
-    no_team = False
+    no_team = True
     con, conn = connection()
     sql = "SELECT id FROM scout_team WHERE scoutmaster_user_id = %s"
     if current_user.is_authenticated:
         scout_team_id = con.execute(sql, escape_string(str(current_user['id'])))
         if not scout_team_id == 0:
             sql = "SELECT * FROM scout WHERE id IN (SELECT id FROM scout_membership WHERE id IN (SELECT id FROM scouting_troop WHERE scout_team_id = %s))"
-            scouts = con.execute(sql, escape_string(str(scout_team_id)))
-        no_team = True
+            scouts_raw = con.execute(sql, escape_string(str(scout_team_id)))
+            if not scouts_raw == 0:
+                scouts.update(scouts_raw)
+            no_team = False
     else:
         flash("Zaloguj się", "warning")
         return redirect('/')
