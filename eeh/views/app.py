@@ -15,7 +15,7 @@ def app():
         scout_team_id = con.execute(sql, escape_string(str(current_user['id'])))
         if not scout_team_id == 0:
             sql = "SELECT * FROM scout WHERE id IN (SELECT id FROM scout_membership WHERE id IN (SELECT id FROM scouting_troop WHERE scout_team_id = %s))"
-            scouts = con.execute(sql, escape_string(scout_team_id))
+            scouts = con.execute(sql, escape_string(str(scout_team_id)))
         no_team = True
     else:
         flash("Zaloguj się", "warning")

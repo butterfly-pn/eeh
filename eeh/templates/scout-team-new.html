@@ -1,0 +1,17 @@
+{% extends "_base.html" %} {% set page_id = 'scout-team-new' %} {% set page_title = 'New scout team' %} {% block content %}
+<div class="row">
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-4 bg-white m-2" style="padding:15px; border: 1px dashed;">
+        <h3>Nowa jednostka</h3>
+        <form id="form" method=post action="{{url_for('scout_team_new_post', next=request.args.get('next'))}}">
+            <div class="form-group">
+                <input id="scout-team-name" name="scout-team-name" type="text" class="form-control" placeholder="Nazwa druzyny">
+            </div>
+            <button id="submit" class="btn btn-lg btn-dashed-primary btn-block" type="submit">Stwórz</button>
+        </form>
+    </div>
+    <div class="col-lg-4">
+    </div>
+</div>
+{% endblock %}
