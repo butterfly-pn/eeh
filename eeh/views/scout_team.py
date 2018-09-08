@@ -24,6 +24,7 @@ def scout_team_new_post():
     scout_team_id = con.lastrowid
     flash("Stworzono {}".format(request.form['scout-team-name']), 'success')
     scouting_troop_id = scouting_troop_create("Komenda", scout_team_id)
+    scouting_troop_create("none", scout_team_id, notify=False)
     scouting_troop_join(current_user['scout_id'], scouting_troop_id)
     con.close()
     conn.close()

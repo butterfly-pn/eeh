@@ -22,7 +22,7 @@ def scouting_troop_join(scout_id, scouting_troop_id):
     conn.close()
 
 
-def scouting_troop_create(name, scout_team_id):
+def scouting_troop_create(name, scout_team_id, notify=True):
     con, conn = connection()
     sql = "INSERT INTO scouting_troop (name, scout_team_id) VALUES (%s, %s)"
     con.execute("SELECT name FROM scout_team WHERE id = %s",
@@ -30,8 +30,8 @@ def scouting_troop_create(name, scout_team_id):
     scout_team = con.fetchone()
     con.execute(sql, (escape_string(name), escape_string(str(scout_team_id))))
     conn.commit()
-    flash("Stworzono \"{}\" w {}".format(
-        name, scout_team['name']), 'success')
+    if notify:
+        flash("Stworzono \"{}\" w {}".format(name, scout_team['name']), 'success')
     scouting_troop_id = con.lastrowid
     con.close()
     conn.close()
