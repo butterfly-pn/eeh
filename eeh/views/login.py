@@ -11,6 +11,8 @@ import re
 import gc
 import config
 
+APP.secret_key = "sekret"
+
 ts = URLSafeTimedSerializer(APP.secret_key)
 
 @APP.route('/login/', methods=["GET", "POST"])
@@ -45,13 +47,14 @@ def login():
 
 
 def send_confirmation_email(mail):
-    print(mail)
-    token = ts.dumps(mail, salt='email-confirm-key')
-    print(token)
-    msg = Message("EEH - Potwierdź swój adres email",
-                  sender=config.MAIL_USERNAME, recipients=[mail])
-    msg.html = render_template('verify_email.html', token=token)
-    MAIL.send(msg)
+    with MAIL.connect() as conn:
+        print(mail)
+        token = ts.dumps(mail, salt='email-confirm-key')
+        print(token)
+        msg = Message("EEH - Potwierdź swój adres email",
+                    sender=config.MAIL_USERNAME, recipients=[mail])
+        msg.html = render_template('verify_email.html', token=token)
+        conn.send(msg)
 
 @APP.route('/register/', methods=["GET", "POST"])
 def register():
@@ -123,5 +126,3 @@ def confirm_email(token):
 def send_mail(mail):
     send_confirmation_email(mail)
     return redirect('/')
-
-APP.secret_key = "sekret"
