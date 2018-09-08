@@ -6,3 +6,4 @@ venv
 eeh/test.db
 .DS_Store
 config.py
+myapp.pid

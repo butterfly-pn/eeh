@@ -21,40 +21,36 @@ def send_confirmation_email(user=current_user):
 
 @APP.route('/login/', methods=["GET", "POST"])
 def login():
-    try:
-        if current_user.is_authenticated:
-            flash('Już jesteś zalogowany!', 'warning')
-            if request.args.get('next'):
-                return redirect(request.args.get('next'))
-            return redirect('/')
-        if request.method == "POST":
+    #try:
+    if current_user.is_authenticated:
+        flash('Już jesteś zalogowany!', 'warning')
+        if request.args.get('next'):
+            return redirect(request.args.get('next'))
+        return redirect('/')
+    if request.method == "POST":
+        con, conn = connection()
+        con.execute("SELECT * FROM user WHERE email = (%s)",
+                    escape_string(request.form['email']))
+        user = con.fetchone()
+        con.close()
+        conn.close()
+        gc.collect()
+        if user and sha256_crypt.verify(request.form['password'], user['password']):
             try:
-                con, conn = connection()
-                con.execute("SELECT * FROM user WHERE email = (%s)",
-                            escape_string(request.form['email']))
-                user = con.fetchone()
-                con.close()
-                conn.close()
-                gc.collect()
-                if user and sha256_crypt.verify(request.form['password'], user['password']):
-                    try:
-                        print("true")
-                        remember = request.form['remember']
-                    except Exception as error:
-                        print(error)
-                        remember = False
-                    login_user(user, remember=remember)
-                    if request.args.get('next'):
-                        return redirect(request.args.get('next'))
-                    return redirect('/app/')
-                return render_template('login.html', form=request.form, wrong=True)
+                print("true")
+                remember = request.form['remember']
             except Exception as error:
                 print(error)
-        else:
-            return render_template('login.html')
-    except Exception as error:
-        flash('Błąd: ' + str(error), 'danger')
-        return redirect('/')
+                remember = False
+            login_user(user, remember=remember)
+            if request.args.get('next'):
+                return redirect(request.args.get('next'))
+            return redirect('/app/')
+        return render_template('login.html', form=request.form, wrong=True)
+    return render_template('login.html')
+    #except Exception as error:
+        #flash('Błąd: ' + str(error), 'danger')
+        #return redirect('/')
 
 
 @APP.route('/register/', methods=["GET", "POST"])
@@ -81,9 +77,8 @@ def register():
                     scout_id) + ")"
                 con.execute(sql, (escape_string(form['login']), escape_string(password), escape_string(form['email'])))
                 conn.commit()
-                user = ("SELECT * FROM user WHERE id=LAST_INSERT_ID()")
                 flash("Zarejestrowano pomyślnie!", 'success')
-                send_confirmation_email(user['email'])
+                send_confirmation_email(form['email'])
                 con.close()
                 conn.close()
                 gc.collect()

@@ -22,7 +22,7 @@ def add_get():
             new.adres = request.form['adres']
             new.nrkont = request.form['nrkont']
             new.funkcja = request.form['funkcja']
-            new.druzyna = current_user.id
+            new.druzyna = current_user['id']
             DB.session.add(new)
             DB.session.commit()
             flash("Success!", 'success')

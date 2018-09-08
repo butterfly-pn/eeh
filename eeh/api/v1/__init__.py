@@ -1,5 +1,5 @@
 from main import APP
-from eeh.models import Harcerz, Druzyna
+from eeh.models import Harcerz, User
 from flask import jsonify
 
 @APP.route("/api/v1/harcerz/<identifier>/", methods=['GET'])

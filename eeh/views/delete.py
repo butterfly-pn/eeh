@@ -9,7 +9,7 @@ from eeh.view_manager import login_required
 @login_required
 def delete(identifier):
     harcerz = Harcerz.query.filter_by(id=identifier).first()
-    if harcerz.druzyna == current_user.id:
+    if harcerz.druzyna == current_user['id']:
         DB.session.delete(harcerz)
         DB.session.commit()
     else:

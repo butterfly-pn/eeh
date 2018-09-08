@@ -9,10 +9,10 @@ from main import APP, DB
 def plan(identifier):
     harcerze = []
     current_plan = Plan.query.filter_by(id=identifier).first()
-    if current_plan.druzyna_id == current_user.id or current_user.admin:
-        plany = Plan.query.filter_by(druzyna_id=current_user.id).all()
+    if current_plan.druzyna_id == current_user['id']:
+        plany = Plan.query.filter_by(druzyna_id=current_user['id']).all()
         plany_indywidualne = HarcerzPlan.query.filter_by(
-            plan_id=current_user.current_plan).all()
+            plan_id=current_user['current_plan']).all()
         for plan_indywidualny in plany_indywidualne:
             harcerz = Harcerz.query.filter_by(id=plan_indywidualny.id).first()
             harcerze.append({
@@ -29,8 +29,8 @@ def plan(identifier):
 @APP.route('/plan/<identifier>/delete/', methods=['GET'])
 def plan_delete(identifier):
     plan = Plan.query.filter_by(id=identifier).first()
-    if plan.druzyna_id == current_user.id or current_user.admin:
-        if plan.id == current_user.current_plan:
+    if plan.druzyna_id == current_user['id']:
+        if plan.id == current_user['current_plan']:
             flash("To jest twój aktualny plan!", 'warning')
             return redirect('/plan/'+str(identifier))
         DB.session.delete(plan)
@@ -50,7 +50,7 @@ def new_plan_post():
     new = Plan()
     new.name = request.form['name']
     new.typ = request.form['typ']
-    new.druzyna_id = current_user.id
+    new.druzyna_id = current_user['id']
     new.wizja = request.form['wizja']
     new.cele = request.form['cele']
     new.zz = request.form['zz']

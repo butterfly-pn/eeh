@@ -11,7 +11,7 @@
       <h3>Rejestracja</h3>
 		<form id="form" method=post action="{{url_for('register', next=request.args.get('next'))}}">
             <div class="form-group">
-                <input id="login" name="login" type="text" class="form-control" placeholder="Login">
+                <input id="login" name="login" type="text" class="form-control" placeholder="Login uzytkownika">
                 {% if used_username %}
                 <small class="form-text text-danger">
                     Ten login jest już zajęty!
@@ -25,7 +25,7 @@
                 <input id="last-name" name="last-name" type="text" class="form-control" placeholder="Twoje nazwisko">
             </div>
             <div class="form-group">
-                <input autocapitalize="none" class="form-control" id="email" name="email" type="email" value="{% if form %}{{form['email']}}{% endif %}" placeholder="Adres email drużynowego">
+                <input autocapitalize="none" class="form-control" id="email" name="email" type="email" value="{% if form %}{{form['email']}}{% endif %}" placeholder="Adres email">
                 {% if wrong_email %}
                 <small class="form-text text-danger">
                     Niepoprawny adres email!

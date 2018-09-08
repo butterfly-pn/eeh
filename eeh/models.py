@@ -9,40 +9,13 @@ from pymysql import escape_string
 import gc
 
 
-@LM.user_loader
-def user_load(user_id):
-    con, conn = connection()
-    con.execute("SELECT * FROM user WHERE id = (%s)", escape_string=user_id)
-    user = con.fetchone()
-    con.close()
-    conn.close()
-    gc.collect()
-    return user
-
-
-class Druzyna(DB.Model):
+class User(dict):
     """
     User model for reviewers.
     """
-    __tablename__ = 'user'
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    active = Column(Boolean, default=True)
-    name = Column(String(20), unique=True)
-    email = Column(String(200), unique=True)
-    confirm_mail = Column(Boolean, default=False)
-    password = Column(String(200), default='')
-    current_plan = Column(Integer)
-    admin = Column(Boolean, default=False)
-    ban = Column(Boolean, default=False)
-
     def check_password(self, password):
-        if sha256_crypt.verify(password, self.password):
+        if sha256_crypt.verify(password, self['password']):
             return True
-
-    def __init__(self, name, password, email):
-        self.name = name
-        self.password = password
-        self.email = email
 
     def is_authenticated(self):
         return True
@@ -54,10 +27,23 @@ class Druzyna(DB.Model):
         return False
 
     def get_id(self):
-        return unicode(self.id)
+        return unicode(self['id'])
 
     def __repr__(self):
-        return '<User %r>' % (self.name)
+        return '<User %r>' % (self['name'])
+
+
+@LM.user_loader
+def user_load(user_id):
+    con, conn = connection()
+    con.execute("SELECT * FROM user WHERE id = (%s)",
+                escape_string(str(user_id)))
+    user = con.fetchone()
+    user = User()
+    con.close()
+    conn.close()
+    gc.collect()
+    return user
 
 class Harcerz(DB.Model):
     """Model for records"""
