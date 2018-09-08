@@ -111,8 +111,7 @@ def confirm_email(token):
     try:
         email = ts.loads(token, salt="email-confirm-key", max_age=86400)
         con, conn = connection()
-        user = con.execute("UPDATE user SET email_confirm = 1 WHERE email = (%s)", escape_string=email)
-        #user = User.query.filter_by(email=email).first_or_404()
+        user = con.execute("UPDATE user SET email_confirm = 1 WHERE email = (%s)", escape_string(email))
         conn.commit()
         flash("Adres email zweryfikowany!", 'success')
         con.close()
@@ -120,9 +119,4 @@ def confirm_email(token):
         gc.collect()
     except Exception as error:
         flash("Blad" + str(error), 'danger')
-    return redirect('/')
-
-@APP.route('/user/confirm/send/<mail>')
-def send_mail(mail):
-    send_confirmation_email(mail)
     return redirect('/')
