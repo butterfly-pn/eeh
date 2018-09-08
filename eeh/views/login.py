@@ -1,7 +1,8 @@
 from flask import request, redirect, render_template, flash, url_for
 from flask_login import current_user, login_user, logout_user
 from passlib.handlers.sha2_crypt import sha256_crypt
-from main import APP, DB, MAIL
+from main import APP, MAIL
+from eeh.models import User
 from dbconnect import connection
 from pymysql import escape_string
 from flask_mail import Message
@@ -12,46 +13,45 @@ import config
 
 ts = URLSafeTimedSerializer(APP.secret_key)
 
-def send_confirmation_email(user=current_user):
-    token = ts.dumps(user['mail'], salt='email-confirm-key')
-    msg = Message("EEH - Potwierdź swój adres email",
-                  sender=config.MAIL_USERNAME, recipients=[user['mail']])
-    msg.html = render_template('verify_email.html', token=token)
-    MAIL.send(msg)
-
 @APP.route('/login/', methods=["GET", "POST"])
 def login():
-    #try:
-    if current_user.is_authenticated:
-        flash('Już jesteś zalogowany!', 'warning')
-        if request.args.get('next'):
-            return redirect(request.args.get('next'))
-        return redirect('/')
-    if request.method == "POST":
-        con, conn = connection()
-        con.execute("SELECT * FROM user WHERE email = (%s)",
-                    escape_string(request.form['email']))
-        user = con.fetchone()
-        con.close()
-        conn.close()
-        gc.collect()
-        if user and sha256_crypt.verify(request.form['password'], user['password']):
-            try:
-                print("true")
-                remember = request.form['remember']
-            except Exception as error:
-                print(error)
-                remember = False
-            login_user(user, remember=remember)
+    try:
+        if current_user.is_authenticated:
+            flash('Już jesteś zalogowany!', 'warning')
             if request.args.get('next'):
                 return redirect(request.args.get('next'))
-            return redirect('/app/')
-        return render_template('login.html', form=request.form, wrong=True)
-    return render_template('login.html')
-    #except Exception as error:
-        #flash('Błąd: ' + str(error), 'danger')
-        #return redirect('/')
+            return redirect('/')
+        if request.method == "POST":
+            con, conn = connection()
+            con.execute("SELECT * FROM user WHERE email = (%s)",
+                        escape_string(request.form['email']))
+            user_dict = con.fetchone()
+            user = User()
+            user.update(user_dict)
+            con.close()
+            conn.close()
+            gc.collect()
+            if user and sha256_crypt.verify(request.form['password'], user['password']):
+                remember_me = request.form['remember-me'] if 'remember_me' in request.form else False
+                login_user(user, remember=remember_me)
+                if request.args.get('next'):
+                    return redirect(request.args.get('next'))
+                return redirect('/app/')
+            return render_template('login.html', form=request.form, wrong=True)
+        return render_template('login.html')
+    except Exception as error:
+        flash('Błąd: ' + str(error), 'danger')
+        return redirect('/')
 
+
+def send_confirmation_email(mail):
+    print(mail)
+    token = ts.dumps(mail, salt='email-confirm-key')
+    print(token)
+    msg = Message("EEH - Potwierdź swój adres email",
+                  sender=config.MAIL_USERNAME, recipients=[mail])
+    msg.html = render_template('verify_email.html', token=token)
+    MAIL.send(msg)
 
 @APP.route('/register/', methods=["GET", "POST"])
 def register():
@@ -117,6 +117,11 @@ def confirm_email(token):
         gc.collect()
     except Exception as error:
         flash("Blad" + str(error), 'danger')
+    return redirect('/')
+
+@APP.route('/user/confirm/send/<mail>')
+def send_mail(mail):
+    send_confirmation_email(mail)
     return redirect('/')
 
 APP.secret_key = "sekret"

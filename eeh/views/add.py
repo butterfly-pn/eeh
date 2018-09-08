@@ -1,7 +1,6 @@
 from flask import render_template, request, redirect, flash
 from flask_login import current_user
-from main import APP, DB
-from eeh.models import Harcerz
+from main import APP
 from datetime import datetime
 from eeh.view_manager import login_required
 

@@ -3,16 +3,83 @@ from flask_login._compat import unicode
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, String, Boolean, Date, Text
 from passlib.hash import sha256_crypt
-from main import DB, LM
+from main import LM
 from dbconnect import connection
 from pymysql import escape_string
+from collections.abc import Mapping
 import gc
 
 
+@LM.user_loader
+def user_load(user_id):
+    try:
+        con, conn = connection()
+        con.execute("SELECT * FROM user WHERE id = (%s)",
+                    escape_string(str(user_id)))
+        user_dict = con.fetchone()
+        user = User()
+        user.update(user_dict)
+        con.close()
+        conn.close()
+        gc.collect()
+        return user
+    except:
+        return None
+
+
 class User(dict):
-    """
-    User model for reviewers.
-    """
+
+    def __setitem__(self, key, item):
+        self.__dict__[key] = item
+
+    def __getitem__(self, key):
+        return self.__dict__[key]
+
+    def __repr__(self):
+        return repr(self.__dict__)
+
+    def __len__(self):
+        return len(self.__dict__)
+
+    def __delitem__(self, key):
+        del self.__dict__[key]
+
+    def clear(self):
+        return self.__dict__.clear()
+
+    def copy(self):
+        return self.__dict__.copy()
+
+    def has_key(self, k):
+        return k in self.__dict__
+
+    def update(self, *args, **kwargs):
+        return self.__dict__.update(*args, **kwargs)
+
+    def keys(self):
+        return self.__dict__.keys()
+
+    def values(self):
+        return self.__dict__.values()
+
+    def items(self):
+        return self.__dict__.items()
+
+    def pop(self, *args):
+        return self.__dict__.pop(*args)
+
+    def __cmp__(self, dict_):
+        return self.__cmp__(self.__dict__, dict_)
+
+    def __contains__(self, item):
+        return item in self.__dict__
+
+    def __iter__(self):
+        return iter(self.__dict__)
+
+    def __unicode__(self):
+        return unicode(repr(self.__dict__))
+
     def check_password(self, password):
         if sha256_crypt.verify(password, self['password']):
             return True
@@ -28,53 +95,3 @@ class User(dict):
 
     def get_id(self):
         return unicode(self['id'])
-
-    def __repr__(self):
-        return '<User %r>' % (self['name'])
-
-
-@LM.user_loader
-def user_load(user_id):
-    con, conn = connection()
-    con.execute("SELECT * FROM user WHERE id = (%s)",
-                escape_string(str(user_id)))
-    user = con.fetchone()
-    user = User()
-    con.close()
-    conn.close()
-    gc.collect()
-    return user
-
-class Harcerz(DB.Model):
-    """Model for records"""
-    __tablename__ = "harcerz"
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    first_name = Column(String(200))
-    second_name = Column(String(200))
-    last_name = Column(String(200))
-    birthdate = Column(Date)
-    pesel = Column(Integer)
-    adres = Column(String(200))
-    nrkont = Column(String(13))
-    funkcja = Column(Integer)
-    druzyna = Column(Integer)
-
-class HarcerzPlan(DB.Model):
-    """Model for work plan with scout"""
-    __tablename__ = "harcerzplan"
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    plan_id = Column(Integer)
-    harcerz_id = Column(Integer)
-    charakterystyka = Column(Text)
-    cele = Column(Text)
-
-class Plan(DB.Model):
-    """Model for work plan"""
-    __tablename__ = "plan"
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    name = Column(String(200))
-    typ = Column(String(30))
-    druzyna_id = Column(Integer)
-    wizja = Column(Text)
-    cele = Column(Text)
-    zz = Column(Text)

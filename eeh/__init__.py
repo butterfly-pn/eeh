@@ -2,11 +2,9 @@ import os
 from flask import Flask
 
 
-def create_app(sqlalchemy_database_uri="", mail_server="", mail_port="", mail_use_ssl="", mail_username="",
+def create_app(mail_server="", mail_port="", mail_use_ssl="", mail_username="",
                mail_password=""):
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemy_database_uri
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.static_path = os.path.join(os.path.abspath(__file__), 'static')
     app.config.update(
         MAIL_SERVER=mail_server,

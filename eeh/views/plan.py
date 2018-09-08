@@ -1,8 +1,7 @@
 from flask import render_template, request, redirect, flash
 from flask_login import current_user
-from eeh.models import Plan, HarcerzPlan, Harcerz
 from eeh.view_manager import login_required
-from main import APP, DB
+from main import APP
 
 @login_required
 @APP.route('/plan/<identifier>/', methods=['GET'])
