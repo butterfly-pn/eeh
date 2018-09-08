@@ -2,7 +2,7 @@
 {% set page_id = 'app' %} 
 {% set page_title = 'App' %} 
 {% block content %} 
-{% if current_user.is_authenticated %}
+{% if not no_team %}
 <div>
 	{% include "menu.html" %}
 	<div>
@@ -55,10 +55,10 @@
 <div class="jumbotron jumbotron-fluid p-3" style="border: 1px dashed">
 	<div class="container pt-5 pb-3">
 		<h1 class="display-4 mt-3">Witaj!</h1>
-		<p class="lead">Oto Elektroniczna Ewidencja Harcerzy, czyli baza danych harcerzy :)</p>
+		<p class="lead">Nie nalezysz do zadnej jednostki</p>
 		<hr class="my-4">
-		<a style="display: inline-block;" class="btn btn-primary sm-btn-lg sm-btn-block" href="/login" role="button">Zaloguj się</a>
-		<a style="display: inline-block;" class="btn btn-secondary sm-btn-lg sm-btn-block" href="/about" role="button">Dowiedz się więcej</a>
+		<a style="display: inline-block;" class="btn btn-primary sm-btn-lg sm-btn-block" href="/scout-team/new" role="button">Stwórz jednostkę</a>
+		<a style="display: inline-block;" class="btn btn-secondary sm-btn-lg sm-btn-block" href="/help" role="button">Dowiedz się więcej</a>
 	</div>
 </div>
 {% endif %} {% endblock %}

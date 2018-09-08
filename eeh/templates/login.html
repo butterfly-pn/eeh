@@ -11,7 +11,7 @@
       <h3>Logowanie</h3>
 		<form method=post action="{% if request.args.get('next') %}{{request.path + "?next=" + request.args.get('next')}}{%else%}/login/{%endif%}">
             <div class="form-group">
-                <input autocapitalize="none" class="form-control" id="email" name="email" type="email" value="{% if form %}{{form['username']}}{%elif request.args.get('username')%}{{request.args.get('username')}}{%else%}{%endif%}" {%if not request.args.get('username')%}autofocus{%endif%} placeholder="Adres email">
+                <input autocapitalize="none" class="form-control" id="email" name="email" type="text" value="{% if form %}{{form['username']}}{%elif request.args.get('username')%}{{request.args.get('username')}}{%else%}{%endif%}" {%if not request.args.get('username')%}autofocus{%endif%} placeholder="Login lub adres email">
             </div>
             <div class="form-group">
                 <input autocapitalize="none" class="form-control" id="password" name="password" type="password" value="" placeholder="Hasło" {%if request.args.get('username')%}autofocus{%endif%}>

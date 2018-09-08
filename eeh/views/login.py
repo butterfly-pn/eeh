@@ -25,8 +25,8 @@ def login():
             return redirect('/')
         if request.method == "POST":
             con, conn = connection()
-            con.execute("SELECT * FROM user WHERE email = (%s)",
-                        escape_string(request.form['email']))
+            con.execute("SELECT * FROM user WHERE email = (%s) OR login = %s",
+                        (escape_string(request.form['email']), escape_string(request.form['email'])))
             user_dict = con.fetchone()
             user = User()
             user.update(user_dict)
