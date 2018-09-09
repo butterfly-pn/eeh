@@ -1,43 +1,37 @@
+@charset "UTF-8";
 /*-------------------------
 	Simple reset
 --------------------------*/
 .primary {
   background-color: #757575;
-  color: #ffffff;
-}
+  color: #ffffff; }
 
 .primary-light {
   background-color: #a4a4a4;
-  color: #ffffff;
-}
+  color: #ffffff; }
 
 .primary-dark {
   background-color: #494949;
-  color: #ffffff;
-}
+  color: #ffffff; }
 
 .secondary {
   background-color: #1976d2;
-  color: #ffffff;
-}
+  color: #ffffff; }
 
 .secondary-light {
   background-color: #63a4ff;
-  color: #ffffff;
-}
+  color: #ffffff; }
 
 .secondary-dark {
   background-color: #004ba0;
-  color: #ffffff;
-}
+  color: #ffffff; }
 
 html,
 body {
   height: 100%;
   width: 100%;
   margin: 0;
-  padding: 0;
-}
+  padding: 0; }
 
 /*-------------------------
 	Demo page
@@ -52,31 +46,23 @@ body {
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
-  top: 40px;
-}
+  top: 40px; }
 
 .ikona {
-  width: 80px;
-}
+  width: 80px; }
 
 @media (max-width: 480px) {
   .name {
-    width: 45%;
-  }
-}
+    width: 45%; } }
 @media (max-width: 768px) {
   .brandings a {
     width: 46px !important;
-    height: 46px;
-  }
-}
+    height: 46px; } }
 .btn {
-  border-radius: 0;
-}
+  border-radius: 0; }
 
 .form-control {
-  border-radius: 0;
-}
+  border-radius: 0; }
 
 .brandings {
   position: fixed;
@@ -85,30 +71,25 @@ body {
   z-index: 97;
   height: 100px;
   animation-name: showBrandings;
-  animation-duration: 1s;
-}
+  animation-duration: 1s; }
 
 .brandings a {
   width: 92px;
-  display: inline-block;
-}
+  display: inline-block; }
 
 .brandings a img {
   width: 100%;
-  height: auto;
-}
+  height: auto; }
 
 #messages {
   right: 30px;
   position: fixed;
   width: 550px;
-  z-index: 98;
-}
+  z-index: 98; }
 
 #messages div {
   animation-name: showMessages;
-  animation-duration: 1s;
-}
+  animation-duration: 1s; }
 
 @keyframes showMessages {
   0% {
@@ -118,8 +99,7 @@ body {
     -ms-filter: blur(3px);
     filter: blur(3px);
     right: -20px;
-    opacity: 0;
-  }
+    opacity: 0; }
   100% {
     -webkit-filter: blur(0px);
     -moz-filter: blur(0px);
@@ -127,9 +107,7 @@ body {
     -ms-filter: blur(0px);
     filter: blur(0px);
     right: 0px;
-    opacity: 1;
-  }
-}
+    opacity: 1; } }
 @keyframes hideMessage {
   0% {
     -webkit-filter: blur(0px);
@@ -138,8 +116,7 @@ body {
     -ms-filter: blur(0px);
     filter: blur(0px);
     right: 0px;
-    opacity: 1;
-  }
+    opacity: 1; }
   100% {
     -webkit-filter: blur(3px);
     -moz-filter: blur(3px);
@@ -147,86 +124,85 @@ body {
     -ms-filter: blur(3px);
     filter: blur(3px);
     right: -30px;
-    opacity: 0;
-  }
-}
+    opacity: 0; } }
 @keyframes showBrandings {
   0% {
-    top: -90px;
-  }
+    top: -90px; }
   100% {
-    top: 60px;
-  }
-}
+    top: 60px; } }
 .container {
-  padding-top: 100px;
-}
+  padding-top: 100px; }
 
 .navbar {
   position: fixed !important;
-  width: 100%;
-}
+  width: 100%; }
 
 .app-menu-item {
   width: 370px;
   height: 370px;
   border: 1px dashed;
   text-align: center;
-  margin: 5px;
-}
+  margin: 5px; }
 
 .app-menu-item a {
   height: 100%;
   position: relative;
   text-decoration: none;
-  color: black;
-}
+  color: black; }
 
 .app-menu-item-text {
   height: 20%;
-  font-size: 24px;
-}
+  font-size: 24px; }
 
 .app-menu-item-image {
   font-size: 150px;
   margin: auto;
   width: 100%;
   height: 80%;
-  padding-top: 20%;
-}
+  padding-top: 20%; }
 
 .btn-dashed-primary {
   color: black;
   background-color: transparent;
   border-color: black;
-  border: 1px dashed;
-}
+  border: 1px dashed; }
 
 .btn-dashed-primary:hover {
   color: #fff;
   background-color: #007bff;
-  border-color: #007bff;
-}
+  border-color: #007bff; }
 
 div.app-menu-item {
-  position: relative;
-}
-div.app-menu-item a {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  text-decoration: none;
-  /* No underlines on the link */
-  z-index: 10;
-  /* Places the link above everything else in the div */
-  background-color: #fff;
-  /* Fix to make div clickable in IE */
-  opacity: 0;
-  /* Fix to make div clickable in IE */
-  filter: alpha(opacity=1);
-  /* Fix to make div clickable in IE */
-}
+  position: relative; }
+  div.app-menu-item a {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-decoration: none;
+    /* No underlines on the link */
+    z-index: 10;
+    /* Places the link above everything else in the div */
+    background-color: #fff;
+    /* Fix to make div clickable in IE */
+    opacity: 0;
+    /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1);
+    /* Fix to make div clickable in IE */ }
+
+.my-custom-select {
+  height: calc(2.25rem + 2px);
+  padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+  line-height: 1.5;
+  color: #495057;
+  vertical-align: middle;
+  background: #fff url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right .75rem center;
+  background-size: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none; }
 
 /*# sourceMappingURL=style.css.map */
