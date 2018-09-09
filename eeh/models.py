@@ -14,7 +14,7 @@ import gc
 def user_load(user_id):
     try:
         con, conn = connection()
-        con.execute("SELECT * FROM user WHERE id = (%s)",
+        con.execute("SELECT * FROM user WHERE id_user = (%s)",
                     escape_string(str(user_id)))
         user_dict = con.fetchone()
         user = User()

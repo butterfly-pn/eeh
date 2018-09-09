@@ -7,17 +7,21 @@ from pymysql import escape_string
 
 @APP.route('/app/')
 def app():
-    scouts = {}
+    scouts = []
     no_team = True
     con, conn = connection()
-    sql = "SELECT id FROM scout_team WHERE scoutmaster_user_id = %s"
+    sql = "SELECT id_scout_team FROM scout_team WHERE scoutmaster_user_id = %s"
     if current_user.is_authenticated:
-        scout_team_id = con.execute(sql, escape_string(str(current_user['id'])))
-        if not scout_team_id == 0:
-            sql = "SELECT * FROM scout WHERE id IN (SELECT id FROM scout_membership WHERE id IN (SELECT id FROM scouting_troop WHERE scout_team_id = %s))"
-            scouts_raw = con.execute(sql, escape_string(str(scout_team_id)))
-            if not scouts_raw == 0:
-                scouts.update(scouts_raw)
+        query = con.execute(sql, escape_string(str(current_user['id_user'])))
+        scout_team = con.fetchone()
+        print(scout_team)
+        if not query == 0:
+            sql = "SELECT a.first_name, a.middle_name, a.last_name, a.birthdate, a.pesel, a.address, a.phone, b.name AS 'scouting_troop_name' FROM scout a, scouting_troop b WHERE id_scout IN (SELECT scout_id FROM scout_membership WHERE scouting_troop_id IN (SELECT id_scouting_troop FROM scouting_troop WHERE scout_team_id = %s))"
+            query = con.execute(sql, escape_string(str(scout_team['id_scout_team'])))
+            scouts_raw = con.fetchone()
+            print(scouts_raw)
+            if not query == 0:
+                scouts.append(scouts_raw)
             no_team = False
     else:
         flash("Zaloguj się", "warning")

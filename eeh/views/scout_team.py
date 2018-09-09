@@ -17,7 +17,7 @@ def scout_team_new_get():
 @APP.route('/scout-team/new/', methods=['POST'])
 def scout_team_new_post():
     sql = "INSERT INTO scout_team (name, scoutmaster_user_id) VALUES (%s, {})".format(
-        current_user['id'])
+        current_user['id_user'])
     con, conn = connection()
     con.execute(sql, escape_string(request.form['scout-team-name']))
     conn.commit()

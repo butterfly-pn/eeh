@@ -7,10 +7,10 @@ from datetime import datetime
 def scouting_troop_join(scout_id, scouting_troop_id):
     con, conn = connection()
     sql = "INSERT INTO scout_membership (scout_id, scouting_troop_id, date) VALUES (%s, %s, %s)"
-    con.execute("SELECT name FROM scouting_troop WHERE id = %s",
+    con.execute("SELECT name FROM scouting_troop WHERE id_scouting_troop = %s",
                 escape_string(str(scouting_troop_id)))
     scouting_troop = con.fetchone()
-    con.execute("SELECT name FROM scout_team WHERE id IN (SELECT scout_team_id FROM scouting_troop WHERE id = %s)",
+    con.execute("SELECT name FROM scout_team WHERE id_scout_team IN (SELECT scout_team_id FROM scouting_troop WHERE id_scouting_troop = %s)",
                 escape_string(str(scouting_troop_id)))
     scout_team = con.fetchone()
     con.execute(sql, (escape_string(str(scout_id)), escape_string(
@@ -25,7 +25,7 @@ def scouting_troop_join(scout_id, scouting_troop_id):
 def scouting_troop_create(name, scout_team_id, notify=True):
     con, conn = connection()
     sql = "INSERT INTO scouting_troop (name, scout_team_id) VALUES (%s, %s)"
-    con.execute("SELECT name FROM scout_team WHERE id = %s",
+    con.execute("SELECT name FROM scout_team WHERE id_scout_team = %s",
                 escape_string(str(scout_team_id)))
     scout_team = con.fetchone()
     con.execute(sql, (escape_string(name), escape_string(str(scout_team_id))))

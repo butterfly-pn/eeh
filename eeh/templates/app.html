@@ -20,7 +20,7 @@
 					<th scope="col">PESEL</th>
 					<th scope="col">Adres zamieszkania</th>
 					<th scope="col">Telefon kontaktowy</th>
-					<th scope="col">Funkcja</th>
+					<th scope="col">Zastęp</th>
 					<th scope="col">Akcje</th>
 				</tr>
 			</thead>
@@ -31,11 +31,11 @@
 					<td>{{harcerz.last_name}}</td>
 					<td>{{harcerz.first_name}}</td>
 					<td>{% if harcerz.second_name %}{{harcerz.second_name}}{% else %}-{% endif %}</td>
-					<td>{{harcerz.birthdate}}</td>
-					<td>{{harcerz.pesel}}</td>
-					<td>{{harcerz.adres}}</td>
-					<td>{{harcerz.nrkont}}</td>
-					<td>{{harcerz.funkcja}}</td>
+					<td>{% if harcerz.birthdate %}{{harcerz.birthdate}}{% else %}-{% endif %}</td>
+					<td>{% if harcerz.pesel %}{{harcerz.pesel}}{% else %}-{% endif %}</td>
+					<td>{% if harcerz.address %}{{harcerz.address}}{% else %}-{% endif %}</td>
+					<td>{% if harcerz.phone %}{{harcerz.phone}}{% else %}-{% endif %}</td>
+					<td>{% if harcerz.scouting_troop_name %}{{harcerz.scouting_troop_name}}{% else %}-{% endif %}</td>
 					<td>
 						<a href="/delete/{{harcerz.id}}/" class="text-danger">Usuń</a>
 						<a href="/edit/{{harcerz.id}}/" class="text-warning">Edytuj</a>
