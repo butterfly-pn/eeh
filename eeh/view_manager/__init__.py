@@ -24,7 +24,22 @@ def scoutmaster_required(func):
         conn.close()
         if is_scoutmaster == 0:
             flash("Musisz być w komendzie", 'warning')
-            next_url = request.url
-            return redirect(url_for('app', next=next_url))
+            return redirect(url_for('app'))
+        return func(*args, **kwargs)
+    return wrap
+
+
+def komenda_required(func):
+    @wraps(func)
+    @login_required
+    def wrap(*args, **kwargs):
+        con, conn = connection()
+        is_scoutmaster = con.execute(
+            "SELECT a.id_scout, b.name, c.id_scout_team FROM scout a, scouting_troop b, scout_team c WHERE a.id_scout = %s AND b.name = \"Komenda\"", escape_string(str(current_user['scout_id'])))
+        con.close()
+        conn.close()
+        if is_scoutmaster == 0:
+            flash("Musisz być w komendzie", 'warning')
+            return redirect(url_for('app'))
         return func(*args, **kwargs)
     return wrap
