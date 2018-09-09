@@ -11,7 +11,7 @@ def scouting_troop_join(scout_id, scouting_troop_id, notify=True):
                 escape_string(str(scouting_troop_id)))
     scouting_troop = con.fetchone()
     con.execute("SELECT first_name, last_name FROM scout WHERE id_scout = %s", escape_string(str(scout_id)))
-    scout = con.fetchone
+    scout = con.fetchone()
     con.execute("SELECT name FROM scout_team WHERE id_scout_team IN (SELECT scout_team_id FROM scouting_troop WHERE id_scouting_troop = %s)",
                 escape_string(str(scouting_troop_id)))
     scout_team = con.fetchone()

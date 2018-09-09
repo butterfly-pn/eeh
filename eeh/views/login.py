@@ -76,8 +76,10 @@ def register():
                 con.execute("INSERT INTO scout (first_name, last_name) VALUES (%s, %s)", (escape_string(form['first-name']), escape_string(form['last-name'])))
                 conn.commit()
                 scout_id = con.lastrowid
-                sql = "INSERT INTO user (login, password, email, scout_id) VALUES (%s, %s, %s, " + str(
-                    scout_id) + ")"
+                con.execute("SELECT id_status FROM status WHERE name = \"unverified\"")
+                status = con.fetchone()
+                sql = "INSERT INTO user (login, password, email, scout_id, status_id) VALUES (%s, %s, %s, " + str(
+                    scout_id) + ", " + str(status['id_status']) + ")"
                 con.execute(sql, (escape_string(form['login']), escape_string(password), escape_string(form['email'])))
                 conn.commit()
                 flash("Zarejestrowano pomyślnie!", 'success')

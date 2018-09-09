@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, flash
 from flask_login import current_user
 from main import APP
 from datetime import datetime
-from eeh.view_manager import scoutmaster_required
+from eeh.view_manager import komenda_required
 from dbconnect import connection
 from pymysql import escape_string
 from eeh.api.v1.scouting_troop import scouting_troop_join
@@ -13,12 +13,13 @@ def valid_pesel(pesel):
     return False
 
 @APP.route('/add/', methods=["POST", "GET"])
-@scoutmaster_required
+@komenda_required
 def add_get():
     if request.method == "GET":
         return render_template('add.html')
     elif request.method == "POST":
         try:
+            print(request.form)
             con, conn = connection()
             if not valid_pesel(request.form['pesel']):
                 flash("Zły pesel", 'warning')
@@ -32,7 +33,7 @@ def add_get():
             scouting_troop_join(scout_id, scouting_troop['id_scouting_troop'], notify=False)
             con.close()
             conn.close()
-            flash("Dodano {} {}!".format(request.form['first_name'], request.form['last_name']), 'success')
+            flash("Dodano {} {}!".format(request.form['first-name'], request.form['last-name']), 'success')
         except Exception as error:
             flash("Error: " + str(error), 'danger')
         return redirect('/app/')
