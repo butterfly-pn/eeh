@@ -4,20 +4,23 @@ from dbconnect import connection
 from datetime import datetime
 
 
-def scouting_troop_join(scout_id, scouting_troop_id):
+def scouting_troop_join(scout_id, scouting_troop_id, notify=True):
     con, conn = connection()
     sql = "INSERT INTO scout_membership (scout_id, scouting_troop_id, date) VALUES (%s, %s, %s)"
     con.execute("SELECT name FROM scouting_troop WHERE id_scouting_troop = %s",
                 escape_string(str(scouting_troop_id)))
     scouting_troop = con.fetchone()
+    con.execute("SELECT first_name, last_name FROM scout WHERE id_scout = %s", escape_string(str(scout_id)))
+    scout = con.fetchone
     con.execute("SELECT name FROM scout_team WHERE id_scout_team IN (SELECT scout_team_id FROM scouting_troop WHERE id_scouting_troop = %s)",
                 escape_string(str(scouting_troop_id)))
     scout_team = con.fetchone()
     con.execute(sql, (escape_string(str(scout_id)), escape_string(
         str(scouting_troop_id)), escape_string(str(datetime.now()))))
     conn.commit()
-    flash("Dołączono do \"{}\" w {}".format(
-        scouting_troop['name'], scout_team['name']), 'success')
+    if notify:
+        flash("{} {} dołącza do \"{}\" w {}".format(
+            scout['first_name'], scout['last_name'], scouting_troop['name'], scout_team['name']), 'success')
     con.close()
     conn.close()
 
