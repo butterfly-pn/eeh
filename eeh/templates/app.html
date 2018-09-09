@@ -37,8 +37,8 @@
 					<td>{% if harcerz['phone'] %}{{harcerz['phone']}}{% else %}-{% endif %}</td>
 					<td>{% if harcerz['scouting_troop_name'] %}{{harcerz['scouting_troop_name']}}{% else %}-{% endif %}</td>
 					<td>
-						<a href="/delete/{{harcerz['id_scout']}}/" class="text-danger">Usuń</a>
-						<a href="/edit/{{harcerz['id_scout']}}/" class="text-warning">Edytuj</a>
+						<a href="/scout/{{harcerz['id_scout']}}/delete/" class="text-danger">Usuń</a>
+						<a href="/scout/{{harcerz['id_scout']}}/edit/" class="text-warning">Edytuj</a>
 					</td>
 				</tr>
 				{% endfor %}
