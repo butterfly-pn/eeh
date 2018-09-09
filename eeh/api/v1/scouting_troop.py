@@ -6,7 +6,7 @@ from datetime import datetime
 
 def scouting_troop_join(scout_id, scouting_troop_id, notify=True):
     con, conn = connection()
-    sql = "INSERT INTO scout_membership (scout_id, scouting_troop_id, date) VALUES (%s, %s, %s)"
+    sql = "INSERT INTO scout_membership (scout_id, scouting_troop_id, start_date) VALUES (%s, %s, %s)"
     con.execute("SELECT name FROM scouting_troop WHERE id_scouting_troop = %s",
                 escape_string(str(scouting_troop_id)))
     scouting_troop = con.fetchone()

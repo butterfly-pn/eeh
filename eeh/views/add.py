@@ -8,7 +8,7 @@ from pymysql import escape_string
 from eeh.api.v1.scouting_troop import scouting_troop_join
 
 def valid_pesel(pesel):
-    if type(pesel) == str and len(pesel) == 11:
+    if (type(pesel) == str and len(pesel) == 11) or pesel == '':
         return True
     return False
 
@@ -24,8 +24,10 @@ def add_get():
             if not valid_pesel(request.form['pesel']):
                 flash("Zły pesel", 'warning')
                 return redirect('/add/')
-            sql = "INSERT INTO scout (first_name, middle_name, last_name, birthdate, pesel, address, phone) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            con.execute(sql, (escape_string(request.form['first-name']), escape_string(request.form['middle-name']), escape_string(request.form['last-name']), escape_string(str(request.form['birthdate'])), escape_string(request.form['pesel']), escape_string(request.form['address']), escape_string(request.form['phone'])))
+            sql = "INSERT INTO scout (first_name, middle_name, last_name, {}pesel, address, phone) VALUES (%s, {}%s, %s, %s, %s, %s)".format(
+                "birthdate, " if not request.form['birthdate'] == '' else '', escape_string(str(request.form['birthdate'])) + ", " if not request.form['birthdate'] == '' else '')
+            print(sql)
+            con.execute(sql, (escape_string(request.form['first-name']), escape_string(request.form['middle-name']), escape_string(request.form['last-name']), escape_string(request.form['pesel']), escape_string(request.form['address']), escape_string(request.form['phone'])))
             conn.commit()
             scout_id = con.lastrowid
             con.execute("SELECT id_scouting_troop FROM scouting_troop WHERE scout_team_id IN (SELECT id_scout_team FROM scout_team WHERE scoutmaster_user_id= %s) AND name = \"none\"", escape_string(str(current_user['id_user'])))
