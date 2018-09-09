@@ -3,7 +3,13 @@ from flask_login import current_user
 from main import APP
 from datetime import datetime
 from eeh.view_manager import login_required
+from dbconnect import connection
+from pymysql import escape_string
 
+def valid_pesel(pesel):
+    if type(pesel) == str and len(pesel) == 11:
+        return True
+    return False
 
 @APP.route('/add/', methods=["POST", "GET"])
 @login_required
@@ -12,19 +18,17 @@ def add_get():
         return render_template('add.html')
     elif request.method == "POST":
         try:
-            new = Harcerz()
-            new.first_name = request.form['first-name']
-            new.second_name = request.form['second-name']
-            new.last_name = request.form['last-name']
-            new.birthdate = datetime.strptime(request.form['birthdate'], '%d-%m-%Y')
-            new.pesel = request.form['pesel']
-            new.adres = request.form['adres']
-            new.nrkont = request.form['nrkont']
-            new.funkcja = request.form['funkcja']
-            new.druzyna = current_user['id']
-            DB.session.add(new)
-            DB.session.commit()
+            con, conn = connection()
+            if not valid_pesel(request.form['pesel']):
+                flash("Zły pesel", 'warning')
+                return redirect('/add/')
+            sql = "INSERT INTO scout (first_name, middle_name, last_name, birthdate, pesel, address, phone) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            print(sql)
+            con.execute(sql, (escape_string(request.form['first-name']), escape_string(request.form['middle-name']), escape_string(request.form['last-name']), escape_string(str(request.form['birthdate'])), escape_string(request.form['pesel']), escape_string(request.form['address']), escape_string(request.form['phone'])))
+            conn.commit()
+            con.close()
+            conn.close()
             flash("Success!", 'success')
         except Exception as error:
-            flash("Error: " + error, 'danger')
+            flash("Error: " + str(error), 'danger')
         return redirect('/')
