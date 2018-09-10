@@ -7,3 +7,6 @@ eeh/test.db
 .DS_Store
 config.py
 myapp.pid
+eeh/static/css/style.css.map
+eeh/static/css/.sass-cache/8114395cc8dd4f755eb92119b39db3c9bb25f6d7/style.scssc
+docs/database-schema.mwb.bak

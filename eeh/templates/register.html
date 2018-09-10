@@ -11,7 +11,7 @@
       <h3>Rejestracja</h3>
 		<form id="form" method=post action="{{url_for('register', next=request.args.get('next'))}}">
             <div class="form-group">
-                <input id="login" name="login" type="text" class="form-control" placeholder="Login uzytkownika">
+                <input id="login" name="login" type="text" class="form-control" maxlength="45" placeholder="Login uzytkownika">
                 {% if used_username %}
                 <small class="form-text text-danger">
                     Ten login jest już zajęty!
