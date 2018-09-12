@@ -1,0 +1,16 @@
+{% extends "_base.html" %} 
+{% set page_id = 'plan' %} 
+{% set page_title = 'Plan pracy' %} 
+{% block content %} 
+{% include "menu.html" %}
+<div class="mt-5 mb-3 row">
+	<div class="col-lg-3"></div>
+	<div class="col-lg-6">
+		<center><h4 style="white-space: nowrap">Ta jednostka nie ma zadnego planu pracy</h4></center>
+		<a href="/plan/new" class="mt-5">
+			<div class="btn btn-primary btn-block">Stwórz nowy plan pracy</div>
+		</a>
+	</div>
+	<div class="col-lg-3"></div>
+</div>
+{% endblock %}

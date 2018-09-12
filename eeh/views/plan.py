@@ -1,11 +1,26 @@
-from flask import render_template, request, redirect, flash
+from flask import render_template, request, redirect, flash, session
 from flask_login import current_user
-from eeh.view_manager import login_required
+from eeh.view_manager import login_required, komenda_required
 from main import APP
+from dbconnect import connection
+from pymysql import escape_string
+from datetime import datetime
+
+@login_required
+@APP.route('/plan/', methods=['GET'])
+def plan():
+    con, conn = connection()
+    con.execute("SELECT * FROM work_plan WHERE scout_team_id = %s", escape_string(str(session['id_scout_team'])))
+    work_plans = con.fetchall()
+    con.close()
+    conn.close()
+    if work_plans:
+        return render_template("plan.html", work_plans=work_plans)
+    return render_template("plan-none.html")
 
 @login_required
 @APP.route('/plan/<identifier>/', methods=['GET'])
-def plan(identifier):
+def plan_get(identifier):
     harcerze = []
     current_plan = Plan.query.filter_by(id=identifier).first()
     if current_plan.druzyna_id == current_user['id']:
@@ -43,16 +58,16 @@ def plan_delete(identifier):
 def new_plan_get():
     return render_template('plan-new.html')
 
-@login_required
+@komenda_required
 @APP.route('/plan/new/', methods=['POST'])
 def new_plan_post():
-    new = Plan()
-    new.name = request.form['name']
-    new.typ = request.form['typ']
-    new.druzyna_id = current_user['id']
-    new.wizja = request.form['wizja']
-    new.cele = request.form['cele']
-    new.zz = request.form['zz']
-    DB.session.add(new)
-    DB.session.commit()
+    con, conn = connection()
+    con.execute("INSERT INTO work_plan (name, category, scout_team_id, start_date) VALUES (%s, %s, %s, %s)", (escape_string(
+        request.form['name']), escape_string(request.form['typ']), escape_string(str(session['id_scout_team'])), escape_string(str(datetime.now()))))
+    conn.commit()
+    work_plan_id = con.lastrowid
+    con.execute("INSERT INTO characteristic (characteristic, category, parent_id, work_plan_id) VALUES (%s, %s, %s, %s)", (escape_string(request.form['wizja']), escape_string("scout_team"), escape_string(str(session['id_scout_team'])), escape_string(str(work_plan_id))))
+    conn.commit()
+    con.close()
+    conn.close()
     return redirect('/plan/')
