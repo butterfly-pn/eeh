@@ -1,4 +1,4 @@
-from flask import request, redirect, render_template, flash, url_for
+from flask import request, redirect, render_template, flash, url_for, session
 from flask_login import current_user, login_user, logout_user
 from passlib.handlers.sha2_crypt import sha256_crypt
 from main import APP, MAIL
@@ -34,8 +34,14 @@ def login():
             conn.close()
             gc.collect()
             if user and sha256_crypt.verify(request.form['password'], user['password']):
+                con, conn = connection()
+                con.execute("SELECT id_scout_team FROM scout_team WHERE scoutmaster_user_id = %s", escape_string(str(user['id_user'])))
+                scout_team = con.fetchone()
+                con.close()
+                conn.close()
                 remember_me = request.form['remember-me'] if 'remember_me' in request.form else False
                 login_user(user, remember=remember_me)
+                session['id_scout_team'] = scout_team['id_scout_team']
                 if request.args.get('next'):
                     return redirect(request.args.get('next'))
                 return redirect('/app/')
