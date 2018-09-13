@@ -1,4 +1,5 @@
-from flask import request, redirect, render_template, flash, url_for, session
+from flask import request, redirect, flash, url_for, session
+from eeh.view_manager.templating import render_template
 from flask_login import current_user, login_user, logout_user
 from passlib.handlers.sha2_crypt import sha256_crypt
 from main import APP, MAIL

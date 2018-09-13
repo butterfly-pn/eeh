@@ -12,5 +12,15 @@
         <li class="nav-item">
             <a class="nav-link {% if page_id=='settings'%}active"{% else %}" href="/settings" {% endif %}>Ustawienia</a>
         </li>
+        <div style="margin-left: auto; right:0">
+            <select onChange="window.location.href=this.value" class="my-custom-select" style="display:inline-block; background-color: #007bff; color: #ffffff">
+                {% for scout_team in scout_teams %}
+                <option value="{{request.host_url}}app?scout-team={{scout_team['id_scout_team']}}" {% if scout_team[ 'id_scout_team'] == session['id_scout_team'] %}selected{% endif %}>{{scout_team['name']}}</option>
+                {% endfor %}
+            </select>
+            <a href="/scout-team/new/" class="btn btn-primary" style="display: inline-block">
+                <div class="w-100">+</div>
+            </a>
+        </div>
     </ul>
 </div>

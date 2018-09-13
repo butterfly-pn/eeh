@@ -1,5 +1,5 @@
 from main import APP
-from flask import render_template
+from eeh.view_manager.templating import render_template
 
 @APP.errorhandler(404)
 def errorhandler404(e):

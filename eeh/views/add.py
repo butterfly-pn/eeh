@@ -1,4 +1,5 @@
-from flask import render_template, request, redirect, flash
+from flask import request, redirect, flash
+from eeh.view_manager.templating import render_template
 from flask_login import current_user
 from main import APP
 from datetime import datetime

@@ -5,14 +5,6 @@
 {% if not no_team %}
 <div>
 	{% include "menu.html" %}
-	<select onChange="window.location.href=this.value" class="my-custom-select" style="display:inline-block;">
-		{% for scout_team in scout_teams %}
-			<option value="{{request.host_url}}app?scout-team={{scout_team['id_scout_team']}}" {% if scout_team['id_scout_team'] == current_scout_team_id %}selected{% endif %}>{{scout_team['name']}}</option>
-		{% endfor %}
-	</select>
-	<a href="/scout-team/new/" class="btn btn-primary mt-3 mb-3" style="display: inline-block">
-		<div class="w-100">+ Nowa jednostka</div>
-	</a>
 	<div>
 		<a href="/add/" class="btn btn-primary mt-3 mb-3">
 			<div class="w-100">+ Dodaj nowy rekord</div>

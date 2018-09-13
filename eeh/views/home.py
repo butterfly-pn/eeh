@@ -1,4 +1,4 @@
-from flask import render_template
+from eeh.view_manager.templating import render_template
 from main import APP
 
 

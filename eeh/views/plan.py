@@ -1,4 +1,5 @@
-from flask import render_template, request, redirect, flash, session
+from flask import request, redirect, flash, session
+from eeh.view_manager.templating import render_template
 from flask_login import current_user
 from eeh.view_manager import login_required, komenda_required
 from main import APP
