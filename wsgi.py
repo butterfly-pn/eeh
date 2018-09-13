@@ -9,6 +9,7 @@ from eeh.api.v1 import *
 from eeh.views.plan import *
 from eeh.views.login import *
 from eeh.views.scout_team import *
+from eeh.views.scouting_troops import *
 
 if __name__ == '__main__':
     APP.run(debug=True)

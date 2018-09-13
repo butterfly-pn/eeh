@@ -1,0 +1,40 @@
+{% extends "_base.html" %} 
+{% set page_id = 'scouting_troops' %} 
+{% set page_title = 'Scouting troops' %} 
+{% block content %} 
+{% include "menu.html" %}
+<div class="mt-5 mb-3 row">
+	{% if scouting_troops %}
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Zastęp</th>
+				<th scope="col">Akcje</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for scouting_troop in scouting_troops %}
+			<tr>
+				<th scope="row">{{ loop.index }}</th>
+				<td>{{scouting_troop['name']}}</td>
+				<td>
+					<a href="/scout/{{scouting_troop['id_scouting_troop']}}/delete/" class="text-danger">Usuń</a>
+					<a href="/scout/{{scouting_troop['id_scouting_troop']}}/edit/" class="text-warning">Edytuj</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<div class="col-lg-3"></div>
+	<div class="col-lg-6">
+		<center><h4 style="white-space: nowrap">Ta jednostka nie ma zadnego planu pracy</h4></center>
+		<a href="/plan/new" class="mt-5">
+			<div class="btn btn-primary btn-block">Stwórz nowy plan pracy</div>
+		</a>
+	</div>
+	<div class="col-lg-3"></div>
+	{% endif %}
+</div>
+{% endblock %}
