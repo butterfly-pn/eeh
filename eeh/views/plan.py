@@ -10,12 +10,20 @@ from datetime import datetime
 @APP.route('/plan/', methods=['GET'])
 def plan():
     con, conn = connection()
+    con.execute("SELECT * FROM scout_team WHERE id_scout_team = %s", escape_string(str(session['id_scout_team'])))
+    current_team = con.fetchone()
     con.execute("SELECT * FROM work_plan WHERE scout_team_id = %s", escape_string(str(session['id_scout_team'])))
     work_plans = con.fetchall()
     con.close()
     conn.close()
     if work_plans:
-        return render_template("plan.html", work_plans=work_plans)
+        current_work_plan = None
+        for work_plan in work_plans:
+            if request.args.get('work-plan'):
+                current_work_plan = work_plan if int(request.args.get('work-plan')) == work_plan['id_work_plan'] else current_work_plan
+            else:
+                current_work_plan = work_plan if work_plan['id_work_plan'] == current_team['current_work_plan_id'] else current_work_plan
+        return render_template("plan.html", work_plans=work_plans, current_work_plan=current_work_plan if current_work_plan else work_plans[-1])
     return render_template("plan-none.html")
 
 @login_required
