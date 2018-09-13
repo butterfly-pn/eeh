@@ -5,7 +5,7 @@
 {% include "menu.html" %}
 <div class="mt-3 mb-3 row">
 	{% if scouting_troops %}
-	<a href="/scouting-troop/create" class="btn btn-primary mb-3">
+	<a href="/scouting-troop/create" class="btn btn-primary mb-3" data-toggle="modal" data-target="#exampleModalCenter">
 		<div class="w-100">+ Dodaj nowy zastęp</div>
 	</a>
 	<table class="table table-hover">
@@ -39,5 +39,28 @@
 	</div>
 	<div class="col-lg-3"></div>
 	{% endif %}
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content" style="border-radius: 0">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalCenterTitle">Stwórz nowy zastęp</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="new-scouting-troop" method="POST">
+					<div class="form-group">
+						<input autocapitalize="none" class="form-control" id="name" name="name" type="text" placeholder="Nazwa zastępu">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="submit" form="new-scouting-troop" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}
