@@ -26,10 +26,14 @@ def scouting_troops_post():
 @komenda_required
 def scouting_troop_get(identifier):
     con, conn = connection()
-    query = con.execute("SELECT a.id_scout, a.first_name, a.last_name, b.name FROM scout a, scouting_troop b, scout_membership c WHERE b.id_scouting_troop = c.scouting_troop_id AND a.id_scout = c.scout_id AND b.scout_team_id = %s AND b.id_scouting_troop = %s", (escape_string(str(session['id_scout_team'])), escape_string(identifier)))
+    query = con.execute("SELECT * FROM scouting_troop WHERE id_scouting_troop = %s AND scout_team_id = %s",
+                        (escape_string(identifier), escape_string(str(session['id_scout_team']))))
+    scouting_troop = con.fetchone()
     if query == 0:
         return redirect("/scouting-troops/")
+    con.execute("SELECT a.id_scout, a.first_name, a.last_name, b.name FROM scout a, scouting_troop b, scout_membership c WHERE b.id_scouting_troop = c.scouting_troop_id AND a.id_scout = c.scout_id AND b.scout_team_id = %s AND b.id_scouting_troop = %s",
+                (escape_string(str(session['id_scout_team'])), escape_string(identifier)))
     scouts = con.fetchall()
     con.close()
     conn.close()
-    return render_template("scouting-troop.html", scouts=scouts)
+    return render_template("scouting-troop.html", scouts=scouts, scouting_troop=scouting_troop)
