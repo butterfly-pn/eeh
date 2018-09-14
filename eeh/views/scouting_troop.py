@@ -21,3 +21,15 @@ def scouting_troops_get():
 def scouting_troops_post():
     scouting_troop_create(request.form['name'], int(session['id_scout_team']))
     return redirect('/scouting-troops/')
+
+@APP.route('/scouting-troop/<identifier>/', methods=['GET'])
+@komenda_required
+def scouting_troop_get(identifier):
+    con, conn = connection()
+    query = con.execute("SELECT a.id_scout, a.first_name, a.last_name, b.name FROM scout a, scouting_troop b, scout_membership c WHERE b.id_scouting_troop = c.scouting_troop_id AND a.id_scout = c.scout_id AND b.scout_team_id = %s AND b.id_scouting_troop = %s", (escape_string(str(session['id_scout_team'])), escape_string(identifier)))
+    if query == 0:
+        return redirect("/scouting-troops/")
+    scouts = con.fetchall()
+    con.close()
+    conn.close()
+    return render_template("scouting-troop.html", scouts=scouts)

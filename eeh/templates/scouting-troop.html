@@ -4,7 +4,10 @@
 {% block content %} 
 {% include "menu.html" %}
 <div class="mt-3 mb-3 row">
-	{% if scouting_troops %}
+	<a href="/scouting-troops/">
+		<div class="ml-2 mr-2"><</div>
+	</a>
+	<h4>{{scouts[0]['name']}}</h4>	
 	<a href="/scouting-troop/create" class="btn btn-primary mb-3" data-toggle="modal" data-target="#exampleModalCenter" style="margin-left: auto; right:0">
 		<div class="w-100">+ Dodaj nowy zastęp</div>
 	</a>
@@ -12,34 +15,26 @@
 		<thead>
 			<tr>
 				<th scope="col">#</th>
-				<th scope="col">Zastęp</th>
+				<th scope="col">Imię</th>
+				<th scope="col">Nazwisko</th>
+				<th scope="col">Funkcja</th>
 				<th scope="col">Akcje</th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for scouting_troop in scouting_troops %}
+			{% for scout in scouts %}
 			<tr>
 				<th scope="row">{{ loop.index }}</th>
-				<td>{{scouting_troop['name']}}</td>
+				<td>{{scout['first_name']}}</td>
+				<td>{{scout['last_name']}}</td>
+				<td>{{scout['name']}}</td>
 				<td>
-					<a href="/scouting-troop/{{scouting_troop['id_scouting_troop']}}/" class="text-primary m-2">Wyświetl</a>
-					<a href="/scouting-troop/{{scouting_troop['id_scouting_troop']}}/delete/" class="text-danger m-2">Usuń</a>
-					<a href="/scouting-troop/{{scouting_troop['id_scouting_troop']}}/edit/" class="text-warning m-2">Edytuj</a>
+					
 				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
-	{% else %}
-	<div class="col-lg-3"></div>
-	<div class="col-lg-6">
-		<center><h4 style="white-space: nowrap">Ta jednostka nie ma zadnego planu pracy</h4></center>
-		<a href="/plan/new" class="mt-5">
-			<div class="btn btn-primary btn-block">Stwórz nowy plan pracy</div>
-		</a>
-	</div>
-	<div class="col-lg-3"></div>
-	{% endif %}
 </div>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
